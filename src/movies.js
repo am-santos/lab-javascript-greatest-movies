@@ -96,37 +96,38 @@ function turnHoursToMinutes(movies) {
     return newTimeFormat; 
 };
 
-console.log(turnHoursToMinutes(movies));
+// console.log(turnHoursToMinutes(movies));
 
 // BONUS - Iteration 8: Best yearly rate average - Best yearly rate average
 
 function bestYearAvg(movies) {
     
-    //const orderedByYear = movies.sort((movie1,movie2) => (movie1.rate - movie2.rate));
-
-    // Aux Var save info about year and average rate so far
-    let newList = [];
     
-    /* Type of saved information {
-        'year': ;
-        'average': 0;
-        'count': 0;
-    }; */
-    const averageRatePerYEar = movies.reduce( (acc, movie) => {
-        /* if ( !acc.includes(movie.year) ) {
-            acc.push(movie.year);
-        }
-        return acc; */
-
-
-
-
-        acc;
+    
+    
+    //const orderedByYear = movies.sort((movie1,movie2) => (movie1.rate - movie2.rate));
+    // Aux Var save info about year and average rate so far
+    
+    
+    // Rates per Year
+    /* Type of saved information 
+        Object {
+        'year': ['rates','rates'];
+        }; */
+    const ratePerYear = movies.reduce( (acc, movie) => {
+        
+        acc[movie.year].push(movie.rate);
         return acc;
     }); 
-
-
-
-    return `The best year was ${} with an average rate of ${}`
+    
+    // Avg. Rates per Year
+    const avgRatePerYear = ratePerYear.map((year) => {
+        const sumOfRates = ratePerYear.year.reduce( (acc, rates) => acc + rates, 0); 
+        return Math.floor((sumOfRates/ratePerYear.year.length)*100)/100;
+    });
+    // Sort & get highest rate
+    const sortedRates = avgRatePerYear.sort( (year1, year2) => year1-year2);
+    return `The best year was ${Object.keys(sortedRates)[0]} with an average rate of ${Object.values(sortedRates)[0]}`;
 };
 
+console.log(bestYearAvg(movies));
