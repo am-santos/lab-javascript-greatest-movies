@@ -1,4 +1,4 @@
-const movies = require('./data.js')
+// const movies = require('./data.js')
 
 
 // Iteration 1: All directors? - Get the array of all directors.
@@ -40,9 +40,12 @@ function ratesAverage(movies) {
     return (Math.floor((sumOfRates / arrayOfRates)*100))/100;
      */
     
-    // Same with less lines
-    const arrayOfRates = movies.reduce( (acc,value) => acc + value.rate ,0);
-    return (Math.floor((arrayOfRates / movies.length)*100))/100;
+    if (!movies.length) {
+        return 0;
+    } else {
+        const arrayOfRates = movies.reduce( (acc,value) => acc + value.rate , 0);
+        return (Math.round((arrayOfRates / movies.length)*100))/100;
+    };
 };
 // console.log(ratesAverage(movies));
 
@@ -54,9 +57,11 @@ function ratesAverage(movies) {
 function dramaMoviesRate(movies) {
 
     const dramaMovies = movies.filter( movie => (movie.genre.includes('Drama'))? true:false);
-    const sumOfAllRates = dramaMovies.reduce( (acc, movie) => ( acc + movie.rate), 0);
-
-    return Math.floor((sumOfAllRates/dramaMovies.length)*100)/100;
+    return ratesAverage(dramaMovies);
+    // My solution:
+    // const sumOfAllRates = dramaMovies.reduce( (acc, movie) => ( acc + movie.rate), 0);
+    // return Math.floor((sumOfAllRates/dramaMovies.length)*100)/100;
+    
 };
 // console.log(dramaMoviesRate(movies));
 
@@ -67,9 +72,10 @@ function dramaMoviesRate(movies) {
 
 function orderByYear(movies) {
 
-    const orderedMovies = movies.sort ( (movie1, movie2) => {
+    const clonedArray = [...movies];
+    const orderedMovies = clonedArray.sort ( (movie1, movie2) => {
         if (movie1.year === movie2.year) {
-            return (movie1.title < movie2.title ? -1 : 1);
+            return (movie1.title.toLowerCase() < movie2.title.toLowerCase() ? -1 : 1); //If special char exist in movie.title, use localecompare method to sort strings.
         } else if ( movie1.year < movie2.year) {
             return -1
         } else {
@@ -102,7 +108,8 @@ function orderAlphabetically(movies) {
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
 
 function turnHoursToMinutes(movies) {
-
+    // Change function so that it passes all Jasmin tests!
+    // This will not work for duration only in hours or only in minutes.
     const newTimeFormat = movies.map(movie => {
         movie.duration = movie.duration[0]*60+parseInt(movie.duration.slice(3));
         return movie;
